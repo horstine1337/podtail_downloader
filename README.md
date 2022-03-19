@@ -33,13 +33,13 @@ $ ./ptdownloader https://podtail.com/podcast/NAME/
 $ Alternatively, to set a custom download directory
 $ ./ptdownloader https://podtail.com/podcast/NAME/ ./download/directory/
 
-$ Alternatively, to set download URL lookup by to document element instead of regex
-$ ./ptdownloader https://podtail.com/podcast/NAME/ [./download/directory/] dom
+$ Alternatively, set the lookup for download URLs to document element, instead of regex
+$ ./ptdownloader dom https://podtail.com/podcast/NAME/ [./download/directory/]
 ```
 
 Don't forget to put the "/" at the end of your download directory path. Or "\\" on Windows (not tested).
 
-The optional dom option at the end will switch between the look up methods for the download URLs.
+The optional `dom` option will switch between the look up methods for the download URLs.
 The default way to look up podcast episodes is by utilizing regex and finding URLs ending with ".mp3".
 
 The dom option will instead try to download anything in the "href" of any html element with `title="Download"`,
