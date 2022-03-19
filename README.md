@@ -45,8 +45,6 @@ The default way to look up podcast episodes is by utilizing regex and finding UR
 The dom option will instead try to download anything in the "href" of any html element with `title="Download"`,
 using CSS selector `a[title*=\"Download\"]`
 
-/home/anton/2022-03-19 18-36-27.mkv
-
 ## Precompiled Binaries
 Crosscompiling to another OS didn't work for me, so the provided binary `ptdownloader` is for Linux x64.
 
