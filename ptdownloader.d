@@ -12,20 +12,6 @@ import std.math;
 import arsd.dom;
 
 
-void downloadLinks(){
-    string[] links = splitLines(readText(fileName));
-    foreach (string link; links) {
-        //get last url item after '/' like "xxxxxxxxx-user-xxxxxxxxx-name.mp3"
-        long index = lastIndexOf(link, '/');
-        //if no '/' was found ignore the current link
-        if(index == -1) continue;
-        string saveTo = link[index+1 .. $];
-        writeln("Downloading " ~ link ~ " to " ~ saveTo);
-        //download and save to current directory
-        download(link, saveTo);
-    }
-}
-
 //Download all files from given URLs to given directory
 void downloadLinks(string[] downloadLinks, string pathTo){
     if(downloadLinks.empty) {
@@ -50,7 +36,7 @@ void downloadLinks(string[] downloadLinks, string pathTo){
 
 // Iterate over all pages for current podcast until "No episodes found".
 // Then parse all URLs containing ".mp3" from the downloaded html.
-string[] findAllDownloadLinksByRegex(string podcastUrl){
+string[] findAllDownloadLinksByRegex(string podcastUrl) {
     bool done = false;
     int curPageNumber = 1;
     string urlWithParameters = podcastUrl ~ "?page=%d&append=false&sort=latest&q=";
@@ -100,12 +86,12 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
 
         //put some tag around the downloaded html to fix an issue with dom.d
         auto document = new Document("<div>"~to!string(tmpReceivedHtml)~"</div>");
-
-		auto links = document.querySelectorAll("a[title*=\"Download\"],a[title*=\"Herunterladen\"]");
-        writeln("Found " ~ to!string(links.length) ~ " links");
-        foreach (link; links){
+	auto links = document.querySelectorAll("a[title*=\"Download\"],a[title*=\"Herunterladen\"]");
+        
+	writeln("Found " ~ to!string(links.length) ~ " links");
+        foreach (link; links) {
             auto found = link.getAttribute("href");           
-            if(!found.empty){
+            if(!found.empty) {
                 writeln("Found " ~ found);
                 ret ~= found;
             }
@@ -115,7 +101,7 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
     return ret;
 }
 
-void writeHelpMessage(){
+void writeHelpMessage() {
     writeln(r"Please specify the podcast URL like 
 ./ptdownloader https://podtail.com/podcast/NAME/
 If you want to store the files in a different directory than the working dir,
