@@ -12,21 +12,14 @@ import std.math;
 import arsd.dom;
 
 
-void downloadLinks(string fileName = "links.txt"){
+void downloadLinks(){
     string[] links = splitLines(readText(fileName));
     foreach (string link; links) {
         //get last url item after '/' like "xxxxxxxxx-user-xxxxxxxxx-name.mp3"
         long index = lastIndexOf(link, '/');
         //if no '/' was found ignore the current link
         if(index == -1) continue;
-        //remove everything until the 3. '-' like "xxxxxxxxx-user-xxxxxxxxx-name.mp3"
         string saveTo = link[index+1 .. $];
-        index = indexOf(saveTo, "-");
-        saveTo = saveTo[index+1 .. $];
-        index = indexOf(saveTo, "-");
-        saveTo = saveTo[index+1 .. $];
-        index = indexOf(saveTo, "-");
-        saveTo = saveTo[index+1 .. $];
         writeln("Downloading " ~ link ~ " to " ~ saveTo);
         //download and save to current directory
         download(link, saveTo);
@@ -75,10 +68,8 @@ string[] findAllDownloadLinksByRegex(string podcastUrl){
             done = true;
         }
         auto matches = matchAll(tmpReceivedHtml, mp3Reg);
-
-        //append("tmp.rogan.html", "\n"~tmpReceivedHtml);
-
-        while (!matches.empty) {
+        
+	while (!matches.empty) {
             writeln("Found " ~ matches.front()[0]);
             ret ~= to!string(matches.front()[0]);
             matches.popFront();   
@@ -93,7 +84,6 @@ string[] findAllDownloadLinksByRegex(string podcastUrl){
 string[] findAllDownloadLinksByDom(string podcastUrl){
     bool done = false;
     int curPageNumber = 1;
-    // string curTimestamp = to!string(Clock.currTime().toUnixTime());
     string urlWithParameters = podcastUrl ~ "?page=%d&append=false&sort=latest";
     string[] ret = [];
 
@@ -153,15 +143,14 @@ void main(string[] args) {
         args.popFront();
     }
 
-    if(!args.empty){
+    if(!args.empty) {
         podcastUrl = args.front();
         args.popFront();
     }else {
         writeHelpMessage();
     }
 
-    if(!args.empty)
-    {
+    if(!args.empty) {
         dlDir = args.front();
         args.popFront();
     }
