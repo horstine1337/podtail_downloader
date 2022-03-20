@@ -86,9 +86,9 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
 
         //put some tag around the downloaded html to fix an issue with dom.d
         auto document = new Document("<div>"~to!string(tmpReceivedHtml)~"</div>");
-	auto links = document.querySelectorAll("a[title*=\"Download\"],a[title*=\"Herunterladen\"]");
-        
-	writeln("Found " ~ to!string(links.length) ~ " links");
+        auto links = document.querySelectorAll("a[title*=\"Download\"],a[title*=\"Herunterladen\"]");
+            
+        writeln("Found " ~ to!string(links.length) ~ " links");
         foreach (link; links) {
             auto found = link.getAttribute("href");           
             if(!found.empty) {
