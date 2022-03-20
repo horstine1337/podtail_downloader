@@ -73,7 +73,7 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
     string urlWithParameters = podcastUrl ~ "?page=%d&append=false&sort=latest";
     string[] ret = [];
 
-    while(!done){
+    while(!done) {
         string urlForCurrentPage = format(urlWithParameters, curPageNumber);
         curPageNumber++;
 
