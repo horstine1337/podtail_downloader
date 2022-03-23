@@ -6,14 +6,17 @@ import std.regex;
 import std.net.curl;
 import std.conv;
 import std.string;
-import std.datetime;
 import std.array;
-import std.math;
 import arsd.dom;
 
 
 //Download all files from given URLs to given directory
 void downloadLinks(string[] downloadLinks, string pathTo){
+    if(pathTo.empty) {
+        writeln("No download directory provided.");
+        return;
+    }
+
     if(downloadLinks.empty) {
         writeln("No download links found.");
         return;
@@ -55,10 +58,10 @@ string[] findAllDownloadLinksByRegex(string podcastUrl) {
         }
         auto matches = matchAll(tmpReceivedHtml, mp3Reg);
         
-	while (!matches.empty) {
+	    while (!matches.empty) {
             writeln("Found " ~ matches.front()[0]);
             ret ~= to!string(matches.front()[0]);
-            matches.popFront();   
+            matches.popFront();
         }
     }
 
@@ -87,10 +90,10 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
         //put some tag around the downloaded html to fix an issue with dom.d
         auto document = new Document("<div>"~to!string(tmpReceivedHtml)~"</div>");
         auto links = document.querySelectorAll("a[title*=\"Download\"],a[title*=\"Herunterladen\"]");
-            
+        
         writeln("Found " ~ to!string(links.length) ~ " links");
         foreach (link; links) {
-            auto found = link.getAttribute("href");           
+            auto found = link.getAttribute("href");
             if(!found.empty) {
                 writeln("Found " ~ found);
                 ret ~= found;
@@ -104,11 +107,15 @@ string[] findAllDownloadLinksByDom(string podcastUrl){
 void writeHelpMessage() {
     writeln(r"Please specify the podcast URL like 
 ./ptdownloader https://podtail.com/podcast/NAME/
+
 If you want to store the files in a different directory than the working dir,
 ./ptdownloader https://podtail.com/podcast/NAME/ ./download/directory/
-Alternatively you can set the download lookup to dom, which will download anything where title='Download'
-The detault will look for URLs ending with '.mp3'.
-./ptdownloader dom https://podtail.com/podcast/NAME/ ./download/directory/");
+
+Alternatively you can set the download lookup to dom,
+which will download any href where html attribute title='Download'
+./ptdownloader dom https://podtail.com/podcast/NAME/ ./download/directory/
+
+The detault will look for URLs ending with '.mp3'.");
 }
 
 void main(string[] args) {
@@ -118,7 +125,7 @@ void main(string[] args) {
     string dlDir = "./";
     
     args.popFront;  // get rid of name
-
+    //prepare arguments
     if(args.empty) {
         writeHelpMessage();
         return;
@@ -141,7 +148,7 @@ void main(string[] args) {
         args.popFront();
     }
 
-    
+    //do the work
     if(useRegex)
         links = findAllDownloadLinksByRegex(podcastUrl);
     else
