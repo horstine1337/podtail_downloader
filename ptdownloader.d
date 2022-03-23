@@ -7,6 +7,8 @@ import std.net.curl;
 import std.conv;
 import std.string;
 import std.array;
+
+//From the awesome modules collection for the web by Adam D. Ruppe https://github.com/adamdruppe/arsd
 import arsd.dom;
 
 
