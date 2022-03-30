@@ -1,6 +1,6 @@
 ## Table of contents
 * [General Info](#general-info)
-* [Setup and Useage](#setup-and-useage)
+* [Setup and Usage](#setup-and-usage)
 * [Precompiled Binaries](#precompiled-binaries)
 * [License](#license)
 
@@ -21,7 +21,7 @@ Written in the <span style="font-weight:bold;">D</span> programming language.
 ![Sample](/sample.gif)
 
 
-## Setup and Useage
+## Setup and Usage
 Download and install DMD from https://dlang.org/download.html to compile ptdownloader.
 
 ```
